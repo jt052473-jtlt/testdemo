@@ -17,7 +17,7 @@ body {
     position: relative;
 }
 
-/* INTRO MODAL */
+/* INTRO / MODALS */
 .modal-overlay {
     position: fixed;
     top: 0;
@@ -96,7 +96,7 @@ body {
 .modal-actions {
     display: flex;
     gap: 0.75rem;
-    margin-top: 2rem;
+    margin-top: 1.5rem;
 }
 
 .btn {
@@ -141,7 +141,7 @@ body {
     width: 72px;
     background: rgba(15, 23, 42, 0.65);
     backdrop-filter: blur(32px) saturate(180%);
-    border-right: 1px solid rgba(148, 163, 184, 0.4);
+    border-left: 1px solid rgba(148, 163, 184, 0.4);
     box-shadow:
         0 4px 30px rgba(0, 0, 0, 0.4),
         inset 0 1px 0 rgba(255, 255, 255, 0.15);
@@ -151,6 +151,18 @@ body {
     padding: 20px 0;
     justify-content: space-between;
     z-index: 10;
+}
+
+.sidebar-right {
+    position: relative;
+    order: 2;
+}
+
+.sidebar-left {
+    position: relative;
+    order: 0;
+    border-right: 1px solid rgba(148, 163, 184, 0.4);
+    border-left: none;
 }
 
 .sidebar-top,
@@ -226,7 +238,7 @@ body {
     text-align: center;
 }
 
-/* TOP CONFIG */
+/* TOP CONFIG + SETTINGS */
 .top-config {
     position: absolute;
     top: 24px;
@@ -234,6 +246,7 @@ body {
     display: flex;
     gap: 12px;
     z-index: 10;
+    align-items: center;
 }
 
 .dropdown-wrapper {
@@ -259,6 +272,22 @@ body {
     font-size: 0.95rem;
     font-weight: 500;
     cursor: pointer;
+}
+
+.settings-btn {
+    background: rgba(15, 23, 42, 0.7);
+    border-radius: 50%;
+    border: 1px solid rgba(148, 163, 184, 0.5);
+    padding: 8px;
+    cursor: pointer;
+    color: #e5e7eb;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.settings-btn:hover {
+    background: rgba(148, 163, 184, 0.25);
 }
 
 /* MAIN CANVAS */
@@ -327,8 +356,10 @@ body {
     color: #555;
     cursor: pointer;
     padding: 6px;
-    border-radius: 50%;
+    border-radius: 999px;
     transition: all 0.2s ease;
+    display: inline-flex;
+    align-items: center;
 }
 
 .icon-control-btn:hover {
@@ -336,28 +367,47 @@ body {
     color: #111;
 }
 
-/* MIC ANIMATION */
-.icon-control-btn.flicker {
-    color: #df4747;
-    background: rgba(223, 71, 71, 0.1);
-    animation: pulseMic 1.2s infinite ease-in-out;
+/* MIC STATES */
+.icon-control-btn.mic-teal {
+    color: #14b8a6;
+    background: rgba(20, 184, 166, 0.12);
+    animation: micPulseTeal 1.3s infinite ease-in-out;
 }
 
-@keyframes pulseMic {
-    0% { opacity: 1; transform: scale(1); }
-    50% { opacity: 0.4; transform: scale(0.95); }
-    100% { opacity: 1; transform: scale(1); }
+@keyframes micPulseTeal {
+    0% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.12); opacity: 0.55; }
+    100% { transform: scale(1); opacity: 1; }
 }
 
-/* START DEMO PULSE */
-.icon-btn.pulse {
-    animation: pulseStart 1.4s infinite ease-in-out;
-    box-shadow: 0 0 18px rgba(59, 130, 246, 0.8);
+.icon-control-btn.mic-red {
+    color: #dc2626;
+    background: rgba(220, 38, 38, 0.12);
+    animation: micPulseRed 1.3s infinite ease-in-out;
 }
 
-@keyframes pulseStart {
+@keyframes micPulseRed {
+    0% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.12); opacity: 0.55; }
+    100% { transform: scale(1); opacity: 1; }
+}
+
+.mic-lock {
+    font-size: 14px;
+    margin-left: 4px;
+    color: #dc2626;
+}
+
+/* START DEMO PULSE (TEAL) */
+.icon-btn.start-pulse {
+    animation: startPulseTeal 1.4s infinite ease-in-out;
+    box-shadow: 0 0 18px rgba(20, 184, 166, 0.8);
+    color: #14b8a6 !important;
+}
+
+@keyframes startPulseTeal {
     0% { transform: scale(1); }
-    50% { transform: scale(1.08); }
+    50% { transform: scale(1.10); }
     100% { transform: scale(1); }
 }
 
@@ -394,6 +444,7 @@ body {
     display: flex;
     justify-content: space-between;
     gap: 8px;
+    flex-wrap: wrap;
 }
 
 .tour-controls button {
@@ -412,6 +463,15 @@ body {
     background: #020617;
 }
 
+#tour-voice-toggle {
+    max-width: 48px;
+    flex: 0 0 auto;
+}
+
+#tour-voice-icon {
+    font-size: 18px;
+}
+
 /* MOBILE */
 @media (max-width: 768px) {
     body {
@@ -426,6 +486,7 @@ body {
         padding: 8px 16px;
         border-right: none;
         border-bottom: 1px solid rgba(148, 163, 184, 0.4);
+        order: 0;
     }
 
     .sidebar-top,

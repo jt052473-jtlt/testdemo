@@ -14,14 +14,14 @@ body {
     position: relative;
 }
 
-/* --- SIDEBAR RAIL --- */
+/* --- SIDEBAR RAIL (FLUENT ACRYLIC SPECIFICATION) --- */
 .sidebar {
     width: 68px;
-    background-color: rgba(255, 255, 255, 0.015); /* Maximum transparency */
-    backdrop-filter: blur(20px); /* Deep blur behind the glass */
-    -webkit-backdrop-filter: blur(20px);
-    border-right: 1px solid rgba(255, 255, 255, 0.06);
-    box-shadow: inset -1px 0 0 rgba(255, 255, 255, 0.05); /* Highlighted edge refraction */
+    background-color: rgba(255, 255, 255, 0.15); /* 1. Semi-transparent light tint overlay */
+    backdrop-filter: blur(20px) saturate(125%);   /* 2. The Gaussian blur & color pop boost */
+    -webkit-backdrop-filter: blur(20px) saturate(125%);
+    border-right: 1px solid rgba(255, 255, 255, 0.2); /* 3. Crisp inner border light refraction */
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);    /* 4. Soft shadow depth above canvas layer */
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -41,7 +41,7 @@ body {
 .icon-btn {
     background: none;
     border: none;
-    color: rgba(255, 255, 255, 0.7);
+    color: rgba(255, 255, 255, 0.75);
     cursor: pointer;
     padding: 10px;
     border-radius: 12px;
@@ -52,7 +52,7 @@ body {
 }
 
 .icon-btn:hover {
-    background-color: rgba(255, 255, 255, 0.1); /* Subtle hover glow */
+    background-color: rgba(255, 255, 255, 0.15); /* Fluent hover illumination */
     color: #ffffff;
 }
 

@@ -246,7 +246,6 @@ body {
     align-items: center;
 }
 
-/* moved to left */
 .top-config.top-left {
     left: 24px;
     right: auto;

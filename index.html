@@ -24,31 +24,19 @@
         <h1 class="header-text">Hi, what should we dive into today?</h1>
 
         <form class="floating-form" onsubmit="event.preventDefault();">
-            <textarea class="text-input" rows="3" placeholder="Message Copilot..."></textarea>
+            <textarea class="text-input" rows="3" placeholder="Type a message..."></textarea>
             
             <div class="form-controls">
                 <div class="left-controls">
-                    <button type="button" class="action-btn">
+                    <button type="button" class="action-btn" title="Add file">
                         <span class="material-symbols-outlined">add</span>
-                    </button>
-                    <button type="button" class="action-btn dropdown">
-                        Smart <span class="material-symbols-outlined">expand_more</span>
                     </button>
                 </div>
                 <div class="right-controls">
-                    <button type="button" class="icon-control-btn"><span class="material-symbols-outlined">eyeglasses</span></button>
-                    <button type="button" class="icon-control-btn"><span class="material-symbols-outlined">mic</span></button>
+                    <button type="button" class="icon-control-btn" title="Voice input"><span class="material-symbols-outlined">mic</span></button>
                 </div>
             </div>
         </form>
-
-        <div class="suggestions-container">
-            <button class="bubble-btn">Create an image</button>
-            <button class="bubble-btn">Find the best deal</button>
-            <button class="bubble-btn">Predict the future</button>
-            <button class="bubble-btn">Take a quiz</button>
-            <button class="bubble-btn">Improve writing</button>
-        </div>
     </main>
 
 </body>

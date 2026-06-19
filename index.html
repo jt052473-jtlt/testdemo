@@ -1,1 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clinical Intake Assistant</title>
 
+    <!-- Google Material Icons -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" />
+
+    <!-- External CSS -->
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<!-- INTRO MODAL -->
+<div class="modal-overlay" id="intro-modal">
+    <div class="modal-card">
+        <h2 class="modal-title">Clinical Intake Assistant</h2>
+        <p class="modal-subtitle">
+            Select language and accept the clinical workflow verification guidelines below to load the assistant.
+        </p>
+
+        <div class="form-field">
+            <label>Language</label>
+            <select class="styled-select" id="modal-lang-select">
+                <option value="en">English</option>
+                <option value="es">Español</option>
+                <option value="zh">中文</option>
+                <option value="hi">हिन्दी</option>
+                <option value="ru">Русский</option>
+            </select>
+        </div>
+
+        <div class="form-field checkbox-field">
+            <input type="checkbox" id="hipaa-consent-chk">
+            <label for="hipaa-consent-chk">
+                I consent to secure voice transcription for clinical intake purposes under protected privacy guidelines.
+            </label>
+        </div>
+
+        <div class="modal-actions">
+            <button type="button" class="btn btn-primary" id="start-tour-btn" disabled>Start Guided Tour</button>
+            <button type="button" class="btn btn-secondary" id="exit-modal-btn">Exit to Main Screen</button>
+        </div>
+    </div>
+</div>
+
+<!-- SIDEBAR -->
+<nav class="sidebar">
+    <div class="sidebar-top">
+        <button class="sidebar-btn-stacked" id="nav-tour-btn">
+            <span class="material-symbols-outlined">explore</span>
+            <span class="btn-label">Tour</span>
+        </button>
+    </div>
+
+    <div class="menu-group">
+        <button class="icon-btn" id="ctrl-start" title="Start">
+            <span class="material-symbols-outlined">play_arrow</span>
+        </button>
+
+        <button class="icon-btn" id="ctrl-pause" title="Pause">
+            <span class="material-symbols-outlined">pause</span>
+        </button>
+
+        <button class="icon-btn" id="ctrl-skip" title="Skip">
+            <span class="material-symbols-outlined">skip_next</span>
+        </button>
+
+        <button class="icon-btn" id="ctrl-repeat" title="Repeat">
+            <span class="material-symbols-outlined">replay</span>
+        </button>
+
+        <button class="icon-btn" id="ctrl-finish" title="Finish">
+            <span class="material-symbols-outlined">check_circle</span>
+        </button>
+
+        <button class="icon-btn" id="ctrl-reset" title="Reset">
+            <span class="material-symbols-outlined">restart_alt</span>
+        </button>
+    </div>
+
+    <div class="sidebar-bottom">
+        <button class="sidebar-btn-stacked" id="nav-read-btn">
+            <span class="material-symbols-outlined">record_voice_over</span>
+            <span class="btn-label">Read</span>
+        </button>
+    </div>
+</nav>
+
+<!-- TOP CONFIG -->
+<header class="top-config">
+    <div class="dropdown-wrapper">
+        <span class="material-symbols-outlined config-icon">language</span>
+        <select class="config-select" id="canvas-lang-select">
+            <option value="en">English</option>
+            <option value="es">Español</option>
+            <option value="zh">中文</option>
+            <option value="hi">हिन्दी</option>
+            <option value="ru">Русский</option>
+        </select>
+    </div>
+
+    <div class="dropdown-wrapper">
+        <span class="material-symbols-outlined config-icon">description</span>
+        <select class="config-select" id="canvas-form-select">
+            <option value="admission">Admission Form</option>
+            <option value="sleep">Sleep Form</option>
+        </select>
+    </div>
+</header>
+
+<!-- MAIN CANVAS -->
+<main class="main-container">
+    <h1 class="header-text" id="main-prompt-header">
+        Hi, what should we dive into today?
+    </h1>
+
+    <form class="floating-form" onsubmit="event.preventDefault();">
+        <textarea class="text-input" id="message-input" rows="1" placeholder="Type your response here..."></textarea>
+
+        <div class="form-controls">
+            <div class="left-controls">
+                <span id="step-indicator" style="display:none;">Step 1 of 4</span>
+            </div>
+
+            <div class="right-controls">
+                <button type="button" class="icon-control-btn" id="mic-btn">
+                    <span class="material-symbols-outlined mic-icon">mic</span>
+                </button>
+            </div>
+        </div>
+    </form>
+</main>
+
+<!-- JS -->
+<script src="script.js"></script>
+
+</body>
+</html>

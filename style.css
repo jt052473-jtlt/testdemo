@@ -14,30 +14,37 @@ body {
     position: relative;
 }
 
-/* --- SIDEBAR RAIL (MORE BLURRED TRANSPARENT ACRYLIC) --- */
+/* --- SIDEBAR RAIL (PREMIUM ACRYLIC WITH TOP/BOTTOM SECTIONS) --- */
 .sidebar {
-    width: 68px;
+    width: 76px;
     background-color: rgba(255, 255, 255, 0.12); /* Semi-transparent light tint overlay */
-    backdrop-filter: blur(35px) saturate(140%);   /* Pushed blur and color pop saturation higher */
+    backdrop-filter: blur(35px) saturate(140%);   /* Heavy crisp blurring */
     -webkit-backdrop-filter: blur(35px) saturate(140%);
-    border-right: 1px solid rgba(255, 255, 255, 0.25); /* Crisp glass edge highlight */
-    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.15);    /* Enhanced drop shadow depth */
+    border-right: 1px solid rgba(255, 255, 255, 0.25);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.15);
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 30px 0;
-    justify-content: center; /* Center the control group vertically */
+    padding: 20px 0;
+    justify-content: space-between; /* Evenly distributes top, middle, and bottom sections */
     z-index: 5;
+}
+
+.sidebar-top, .sidebar-bottom {
+    width: 100%;
+    display: flex;
+    justify-content: center;
 }
 
 .menu-group {
     display: flex;
     flex-direction: column;
-    gap: 22px; /* Smooth spacing between workflow buttons */
+    gap: 20px; /* Symmetrical layouts for core controls */
     align-items: center;
     width: 100%;
 }
 
+/* Base button styling for individual controls */
 .icon-btn {
     background: none;
     border: none;
@@ -52,8 +59,37 @@ body {
 }
 
 .icon-btn:hover {
-    background-color: rgba(255, 255, 255, 0.2); /* Fluent illumination glow */
+    background-color: rgba(255, 255, 255, 0.2);
     color: #ffffff;
+}
+
+/* Specialized stacked layout for Guided Tour and Read Aloud */
+.sidebar-btn-stacked {
+    background: none;
+    border: none;
+    color: rgba(255, 255, 255, 0.85);
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    width: 85%;
+    padding: 10px 4px;
+    border-radius: 12px;
+    transition: all 0.2s ease;
+}
+
+.sidebar-btn-stacked:hover {
+    background-color: rgba(255, 255, 255, 0.15);
+    color: #ffffff;
+}
+
+.sidebar-btn-stacked .btn-label {
+    font-size: 0.7rem;
+    font-weight: 600;
+    text-align: center;
+    line-height: 1.1;
+    letter-spacing: -0.2px;
 }
 
 /* --- FLOATING CONFIGURATION OVERLAY --- */
@@ -101,7 +137,7 @@ body {
 }
 
 .config-select option {
-    background: #1d5361; /* Matches the base canvas color theme */
+    background: #1d5361;
     color: #ffffff;
 }
 
@@ -123,11 +159,11 @@ body {
     letter-spacing: -0.5px;
 }
 
-/* --- FLOATING INPUT CARD (SOLID WHITE MAIN ENVIRONMENT) --- */
+/* --- FLOATING INPUT CARD (SOLID WHITE ENVIRONMENT) --- */
 .floating-form {
     width: 100%;
     max-width: 740px;
-    background: #ffffff; /* Flipped to solid white */
+    background: #ffffff;
     border-radius: 28px;
     padding: 18px;
     box-shadow: 0 12px 40px rgba(0, 0, 0, 0.25);
@@ -141,14 +177,14 @@ body {
     border: none;
     outline: none;
     font-size: 1.1rem;
-    color: #222222; /* Dark slate text for perfect contrast against white */
+    color: #222222;
     background: transparent;
     resize: none;
     padding: 4px;
 }
 
 .text-input::placeholder {
-    color: #757575; /* Crisp readable placeholder gray */
+    color: #757575;
 }
 
 /* Internal control toolbar */
@@ -163,36 +199,6 @@ body {
     display: flex;
     align-items: center;
     gap: 10px;
-}
-
-/* Buttons inside the solid white form box */
-.action-btn {
-    background: #f1f3f5;
-    border: none;
-    width: 36px;
-    height: 36px;
-    border-radius: 50%;
-    color: #444444;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: background 0.2s;
-}
-
-/* Upgraded rule to handle text-pill action buttons nicely */
-.action-btn.text-btn {
-    width: auto;
-    height: 36px;
-    border-radius: 18px;
-    padding: 0 14px;
-    font-size: 0.9rem;
-    font-weight: 500;
-    gap: 6px;
-}
-
-.action-btn:hover {
-    background: #e2e6ea;
 }
 
 .icon-control-btn {
@@ -216,13 +222,9 @@ body {
     font-size: 24px;
 }
 
-.action-btn.text-btn .material-symbols-outlined {
-    font-size: 20px;
-}
-
 /* --- MICROPHONE FLICKER KEYFRAMES & ANIMATION --- */
 .icon-control-btn.flicker {
-    color: #df4747; /* Standard recording red */
+    color: #df4747;
     background: rgba(223, 71, 71, 0.1);
     animation: pulse 1.2s infinite ease-in-out;
 }

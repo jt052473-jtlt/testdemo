@@ -1,6 +1,4 @@
-// ===============================
-// DOM ELEMENT REFERENCES
-// ===============================
+// DOM ELEMENTS
 const introModal = document.getElementById('intro-modal');
 const hipaaConsent = document.getElementById('hipaa-consent-chk');
 const startTourBtn = document.getElementById('start-tour-btn');
@@ -25,9 +23,7 @@ const ctrlReset = document.getElementById('ctrl-reset');
 const navTourBtn = document.getElementById('nav-tour-btn');
 const navReadBtn = document.getElementById('nav-read-btn');
 
-// ===============================
-// CLINICAL WORKFLOW QUESTION SETS
-// ===============================
+// WORKFLOWS
 const intakeWorkflows = {
     admission: [
         "What is your legal full name?",
@@ -46,24 +42,20 @@ const intakeWorkflows = {
 let currentStepIndex = -1;
 let currentFormType = "admission";
 let tourActive = false;
+let collectedAnswers = [];
 
-// ===============================
 // COMPLIANCE GATE
-// ===============================
 startTourBtn.disabled = true;
 
 hipaaConsent.addEventListener('change', () => {
     startTourBtn.disabled = !hipaaConsent.checked;
 });
 
-// Sync modal language to canvas language
 modalLangSelect.addEventListener('change', () => {
     canvasLangSelect.value = modalLangSelect.value;
 });
 
-// ===============================
-// CORE TOUR ENGINE
-// ===============================
+// TOUR ENGINE
 function updatePromptDisplay() {
     const activeQuestions = intakeWorkflows[currentFormType];
 
@@ -80,12 +72,14 @@ function updatePromptDisplay() {
         mainPromptHeader.textContent = "Thank you! Clinical intake steps are completed successfully.";
         stepIndicator.style.display = 'none';
         endTourProcessingStates();
+        generateFhirQuestionnaireResponse();
     }
 }
 
 function initiateTourFlow() {
     tourActive = true;
     currentStepIndex = 0;
+    collectedAnswers = [];
 
     introModal.style.display = 'none';
     navTourBtn.classList.add('active-state');
@@ -107,9 +101,7 @@ function endTourProcessingStates() {
     stepIndicator.style.display = 'none';
 }
 
-// ===============================
-// EVENT LISTENERS — TOUR CONTROLS
-// ===============================
+// EVENT LISTENERS — TOUR
 startTourBtn.addEventListener('click', initiateTourFlow);
 navTourBtn.addEventListener('click', initiateTourFlow);
 
@@ -119,19 +111,17 @@ exitModalBtn.addEventListener('click', () => {
     mainPromptHeader.textContent = "Hi, what should we dive into today?";
 });
 
-// Form type switching
 canvasFormSelect.addEventListener('change', () => {
     currentFormType = canvasFormSelect.value;
 
     if (tourActive) {
         currentStepIndex = 0;
+        collectedAnswers = [];
         updatePromptDisplay();
     }
 });
 
-// ===============================
-// SIDEBAR BUTTON LOGIC
-// ===============================
+// SIDEBAR BUTTONS
 ctrlStart.addEventListener('click', () => {
     setMicState(true);
     ctrlStart.classList.add('active-state');
@@ -146,6 +136,7 @@ ctrlPause.addEventListener('click', () => {
 
 ctrlSkip.addEventListener('click', () => {
     if (tourActive) {
+        collectedAnswers[currentStepIndex] = messageInput.value.trim();
         currentStepIndex++;
         messageInput.value = "";
         messageInput.style.height = 'auto';
@@ -162,6 +153,7 @@ ctrlRepeat.addEventListener('click', () => {
 
 ctrlFinish.addEventListener('click', () => {
     if (tourActive) {
+        collectedAnswers[currentStepIndex] = messageInput.value.trim();
         currentStepIndex = intakeWorkflows[currentFormType].length;
         updatePromptDisplay();
     }
@@ -170,6 +162,7 @@ ctrlFinish.addEventListener('click', () => {
 ctrlReset.addEventListener('click', () => {
     messageInput.value = "";
     messageInput.style.height = 'auto';
+    collectedAnswers = [];
 
     if (!tourActive) {
         mainPromptHeader.textContent = "Hi, what should we dive into today?";
@@ -179,14 +172,11 @@ ctrlReset.addEventListener('click', () => {
     }
 });
 
-// Read aloud toggle
 navReadBtn.addEventListener('click', () => {
     navReadBtn.classList.toggle('active-state');
 });
 
-// ===============================
-// MICROPHONE STATE HANDLER
-// ===============================
+// MIC STATE
 function setMicState(active) {
     if (active) {
         micBtn.classList.add('flicker');
@@ -199,16 +189,78 @@ function setMicState(active) {
     }
 }
 
-// Manual mic toggle
+// VOICE-TO-TEXT (WEB SPEECH API)
+let recognition = null;
+
+if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+    const SpeechRecognition =
+        window.SpeechRecognition || window.webkitSpeechRecognition;
+
+    recognition = new SpeechRecognition();
+    recognition.continuous = false;
+    recognition.interimResults = true;
+    recognition.lang = canvasLangSelect.value;
+
+    canvasLangSelect.addEventListener('change', () => {
+        if (recognition) {
+            recognition.lang = canvasLangSelect.value;
+        }
+    });
+
+    recognition.onresult = (event) => {
+        let transcript = '';
+        for (let i = 0; i < event.results.length; i++) {
+            transcript += event.results[i][0].transcript + ' ';
+        }
+        messageInput.value = transcript.trim();
+        messageInput.dispatchEvent(new Event('input'));
+    };
+
+    recognition.onend = () => {
+        setMicState(false);
+    };
+} else {
+    console.warn('Web Speech API not supported in this browser.');
+}
+
 micBtn.addEventListener('click', () => {
-    const isActive = micBtn.classList.toggle('flicker');
-    setMicState(isActive);
+    if (!recognition) {
+        alert('Voice input is not supported in this browser.');
+        return;
+    }
+
+    if (micBtn.classList.contains('flicker')) {
+        recognition.stop();
+        setMicState(false);
+    } else {
+        setMicState(true);
+        recognition.start();
+    }
 });
 
-// ===============================
 // AUTO-EXPANDING TEXTAREA
-// ===============================
 messageInput.addEventListener('input', function () {
     this.style.height = 'auto';
     this.style.height = this.scrollHeight + 'px';
 });
+
+// FHIR QUESTIONNAIRERESPONSE GENERATOR
+function generateFhirQuestionnaireResponse() {
+    const questions = intakeWorkflows[currentFormType];
+
+    const questionnaireResponse = {
+        resourceType: "QuestionnaireResponse",
+        status: "completed",
+        questionnaire: `Questionnaire/${currentFormType}`,
+        item: questions.map((q, index) => ({
+            linkId: `q${index + 1}`,
+            text: q,
+            answer: collectedAnswers[index]
+                ? [{ valueString: collectedAnswers[index] }]
+                : []
+        }))
+    };
+
+    console.log("FHIR QuestionnaireResponse:", questionnaireResponse);
+    alert("FHIR JSON generated. Check console for details.");
+}

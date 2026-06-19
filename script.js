@@ -1,5 +1,3 @@
-// script.js
-
 // DOM ELEMENTS
 const introModal = document.getElementById('intro-modal');
 const hipaaConsent = document.getElementById('hipaa-consent-chk');

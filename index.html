@@ -53,11 +53,20 @@
                     </button>
                 </div>
                 <div class="right-controls">
-                    <button type="button" class="icon-control-btn" title="Voice input"><span class="material-symbols-outlined">mic</span></button>
+                    <button type="button" class="icon-control-btn" id="mic-btn" title="Voice input">
+                        <span class="material-symbols-outlined mic-icon">mic</span>
+                    </button>
                 </div>
             </div>
         </form>
     </main>
+
+    <script>
+        const micBtn = document.getElementById('mic-btn');
+        micBtn.addEventListener('click', () => {
+            micBtn.classList.toggle('flicker');
+        });
+    </script>
 
 </body>
 </html>

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Copilot Test Build</title>
+    <title>Global Demo Forms - Clinical Intake</title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
     <link rel="stylesheet" href="style.css">
 </head>
@@ -19,6 +19,26 @@
             <button class="icon-btn" title="Reset"><span class="material-symbols-outlined">restart_alt</span></button>
         </div>
     </nav>
+
+    <header class="top-config">
+        <div class="dropdown-wrapper">
+            <span class="material-symbols-outlined config-icon">language</span>
+            <select class="config-select">
+                <option value="en">English</option>
+                <option value="es">Español (Spanish)</option>
+                <option value="zh">中文 (Chinese)</option>
+                <option value="hi">हिन्दी (Hindi)</option>
+                <option value="ru">Русский (Russian)</option>
+            </select>
+        </div>
+        <div class="dropdown-wrapper">
+            <span class="material-symbols-outlined config-icon">description</span>
+            <select class="config-select">
+                <option value="admission">Admission Form</option>
+                <option value="sleep">Sleep Form</option>
+            </select>
+        </div>
+    </header>
 
     <main class="main-container">
         <h1 class="header-text">Hi, what should we dive into today?</h1>

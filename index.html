@@ -3,69 +3,28 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Global Demo Forms - Clinical Intake</title>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+    <title>Clinical Intake Assistant</title>
+
+    <!-- Google Material Icons -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" />
+
+    <!-- External CSS -->
     <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
 
-    <div class="modal-overlay" id="intro-modal">
-        <div class="modal-card">
-            <h2 class="modal-title">Clinical Intake Assistant</h2>
-            <p class="modal-subtitle">Select language and accept the clinical workflow verification guidelines below to load the assistant.</p>
-            
-            <div class="form-field">
-                <label>Language</label>
-                <select class="styled-select" id="modal-lang-select">
-                    <option value="en">English</option>
-                    <option value="es">Español (Spanish)</option>
-                    <option value="zh">中文 (Chinese)</option>
-                    <option value="hi">हिन्दी (Hindi)</option>
-                    <option value="ru">Русский (Russian)</option>
-                </select>
-            </div>
+<!-- INTRO MODAL -->
+<div class="modal-overlay" id="intro-modal">
+    <div class="modal-card">
+        <h2 class="modal-title">Clinical Intake Assistant</h2>
+        <p class="modal-subtitle">
+            Select language and accept the clinical workflow verification guidelines below to load the assistant.
+        </p>
 
-            <div class="form-field checkbox-field">
-                <input type="checkbox" id="hipaa-consent-chk">
-                <label for="hipaa-consent-chk">I consent to secure voice transcription for clinical intake purposes under protected privacy guidelines.</label>
-            </div>
-
-            <div class="modal-actions">
-                <button type="button" class="btn btn-primary" id="start-tour-btn">Start Guided Tour</button>
-                <button type="button" class="btn btn-secondary" id="exit-modal-btn">Exit to Main Screen</button>
-            </div>
-        </div>
-    </div>
-
-    <nav class="sidebar">
-        <div class="sidebar-top">
-            <button class="sidebar-btn-stacked" id="nav-tour-btn" title="Guided Tour">
-                <span class="material-symbols-outlined">explore</span>
-                <span class="btn-label">Guided Tour</span>
-            </button>
-        </div>
-
-        <div class="menu-group">
-            <button class="icon-btn" id="ctrl-start" title="Start"><span class="material-symbols-outlined">play_arrow</span></button>
-            <button class="icon-btn" id="ctrl-pause" title="Pause"><span class="material-symbols-outlined">pause</span></button>
-            <button class="icon-btn" id="ctrl-finish" title="Finish"><span class="material-symbols-outlined">check_circle</span></button>
-            <button class="icon-btn" id="ctrl-repeat" title="Repeat"><span class="material-symbols-outlined">replay</span></button>
-            <button class="icon-btn" id="ctrl-skip" title="Skip"><span class="material-symbols-outlined">skip_next</span></button>
-            <button class="icon-btn" id="ctrl-reset" title="Reset"><span class="material-symbols-outlined">restart_alt</span></button>
-        </div>
-
-        <div class="sidebar-bottom">
-            <button class="sidebar-btn-stacked" id="nav-read-btn" title="Read Aloud">
-                <span class="material-symbols-outlined">record_voice_over</span>
-                <span class="btn-label">Read Aloud</span>
-            </button>
-        </div>
-    </nav>
-
-    <header class="top-config">
-        <div class="dropdown-wrapper">
-            <span class="material-symbols-outlined config-icon">language</span>
-            <select class="config-select" id="canvas-lang-select">
+        <div class="form-field">
+            <label>Language</label>
+            <select class="styled-select" id="modal-lang-select">
                 <option value="en">English</option>
                 <option value="es">Español</option>
                 <option value="zh">中文</option>
@@ -73,218 +32,111 @@
                 <option value="ru">Русский</option>
             </select>
         </div>
-        <div class="dropdown-wrapper">
-            <span class="material-symbols-outlined config-icon">description</span>
-            <select class="config-select" id="canvas-form-select">
-                <option value="admission">Admission Form</option>
-                <option value="sleep">Sleep Form</option>
-            </select>
+
+        <div class="form-field checkbox-field">
+            <input type="checkbox" id="hipaa-consent-chk">
+            <label for="hipaa-consent-chk">
+                I consent to secure voice transcription for clinical intake purposes under protected privacy guidelines.
+            </label>
         </div>
-    </header>
 
-    <main class="main-container">
-        <h1 class="header-text" id="main-prompt-header">Hi, what should we dive into today?</h1>
+        <div class="modal-actions">
+            <button type="button" class="btn btn-primary" id="start-tour-btn" disabled>Start Guided Tour</button>
+            <button type="button" class="btn btn-secondary" id="exit-modal-btn">Exit to Main Screen</button>
+        </div>
+    </div>
+</div>
 
-        <form class="floating-form" onsubmit="event.preventDefault();">
-            <textarea class="text-input" id="message-input" rows="1" placeholder="Type your response here..."></textarea>
-            
-            <div class="form-controls">
-                <div class="left-controls">
-                    <span id="step-indicator" style="color: #666; font-size: 0.85rem; font-weight: 600; display: none;">Step 1 of 4</span>
-                </div>
-                <div class="right-controls">
-                    <button type="button" class="icon-control-btn" id="mic-btn" title="Voice input">
-                        <span class="material-symbols-outlined mic-icon">mic</span>
-                    </button>
-                </div>
+<!-- SIDEBAR -->
+<nav class="sidebar">
+    <div class="sidebar-top">
+        <button class="sidebar-btn-stacked" id="nav-tour-btn">
+            <span class="material-symbols-outlined">explore</span>
+            <span class="btn-label">Tour</span>
+        </button>
+    </div>
+
+    <div class="menu-group">
+        <button class="icon-btn" id="ctrl-start" title="Start">
+            <span class="material-symbols-outlined">play_arrow</span>
+        </button>
+
+        <button class="icon-btn" id="ctrl-pause" title="Pause">
+            <span class="material-symbols-outlined">pause</span>
+        </button>
+
+        <button class="icon-btn" id="ctrl-skip" title="Skip">
+            <span class="material-symbols-outlined">skip_next</span>
+        </button>
+
+        <button class="icon-btn" id="ctrl-repeat" title="Repeat">
+            <span class="material-symbols-outlined">replay</span>
+        </button>
+
+        <button class="icon-btn" id="ctrl-finish" title="Finish">
+            <span class="material-symbols-outlined">check_circle</span>
+        </button>
+
+        <button class="icon-btn" id="ctrl-reset" title="Reset">
+            <span class="material-symbols-outlined">restart_alt</span>
+        </button>
+    </div>
+
+    <div class="sidebar-bottom">
+        <button class="sidebar-btn-stacked" id="nav-read-btn">
+            <span class="material-symbols-outlined">record_voice_over</span>
+            <span class="btn-label">Read</span>
+        </button>
+    </div>
+</nav>
+
+<!-- TOP CONFIG -->
+<header class="top-config">
+    <div class="dropdown-wrapper">
+        <span class="material-symbols-outlined config-icon">language</span>
+        <select class="config-select" id="canvas-lang-select">
+            <option value="en">English</option>
+            <option value="es">Español</option>
+            <option value="zh">中文</option>
+            <option value="hi">हिन्दी</option>
+            <option value="ru">Русский</option>
+        </select>
+    </div>
+
+    <div class="dropdown-wrapper">
+        <span class="material-symbols-outlined config-icon">description</span>
+        <select class="config-select" id="canvas-form-select">
+            <option value="admission">Admission Form</option>
+            <option value="sleep">Sleep Form</option>
+        </select>
+    </div>
+</header>
+
+<!-- MAIN CANVAS -->
+<main class="main-container">
+    <h1 class="header-text" id="main-prompt-header">
+        Hi, what should we dive into today?
+    </h1>
+
+    <form class="floating-form" onsubmit="event.preventDefault();">
+        <textarea class="text-input" id="message-input" rows="1" placeholder="Type your response here..."></textarea>
+
+        <div class="form-controls">
+            <div class="left-controls">
+                <span id="step-indicator" style="display:none;">Step 1 of 4</span>
             </div>
-        </form>
-    </main>
 
-    <script>
-        // DOM Elements Configuration Maps
-        const introModal = document.getElementById('intro-modal');
-        const hipaaConsent = document.getElementById('hipaa-consent-chk');
-        const startTourBtn = document.getElementById('start-tour-btn');
-        const exitModalBtn = document.getElementById('exit-modal-btn');
-        const messageInput = document.getElementById('message-input');
-        const micBtn = document.getElementById('mic-btn');
-        const mainPromptHeader = document.getElementById('main-prompt-header');
-        const stepIndicator = document.getElementById('step-indicator');
-        
-        // Syncing Lang Elements
-        const modalLangSelect = document.getElementById('modal-lang-select');
-        const canvasLangSelect = document.getElementById('canvas-lang-select');
-        const canvasFormSelect = document.getElementById('canvas-form-select');
+            <div class="right-controls">
+                <button type="button" class="icon-control-btn" id="mic-btn">
+                    <span class="material-symbols-outlined mic-icon">mic</span>
+                </button>
+            </div>
+        </div>
+    </form>
+</main>
 
-        // Sidebar Actions Controls Map
-        const ctrlStart = document.getElementById('ctrl-start');
-        const ctrlPause = document.getElementById('ctrl-pause');
-        const ctrlFinish = document.getElementById('ctrl-finish');
-        const ctrlRepeat = document.getElementById('ctrl-repeat');
-        const ctrlSkip = document.getElementById('ctrl-skip');
-        const ctrlReset = document.getElementById('ctrl-reset');
-        const navTourBtn = document.getElementById('nav-tour-btn');
-        const navReadBtn = document.getElementById('nav-read-btn');
-
-        // Clinical Questions Registry States
-        const intakeWorkflows = {
-            admission: [
-                "What is your legal full name?",
-                "What is your date of birth?",
-                "Please verify your current residential address.",
-                "Who should be listed as your primary emergency contact?"
-            ],
-            sleep: [
-                "How many hours of sleep do you typically average per night?",
-                "Do you experience regular daytime fatigue or morning headaches?",
-                "Has a sleeping partner ever reported that you snore loudly or gasp for air?",
-                "Please specify any history of high blood pressure or respiratory tracking."
-            ]
-        };
-
-        let currentStepIndex = -1; 
-        let currentFormType = "admission";
-        let tourActive = false;
-
-        // --- COMPLIANCE GATE CONTROLS ---
-        startTourBtn.disabled = true; 
-        hipaaConsent.addEventListener('change', () => {
-            startTourBtn.disabled = !hipaaConsent.checked;
-        });
-
-        // Sync Modal language to workspace canvas language selection
-        modalLangSelect.addEventListener('change', () => {
-            canvasLangSelect.value = modalLangSelect.value;
-        });
-
-        // --- INTERACTIVE TOUR LOGIC ENGINE ---
-        function updatePromptDisplay() {
-            const activeQuestions = intakeWorkflows[currentFormType];
-            if (currentStepIndex >= 0 && currentStepIndex < activeQuestions.length) {
-                mainPromptHeader.textContent = activeQuestions[currentStepIndex];
-                stepIndicator.style.display = 'block';
-                stepIndicator.textContent = `Step ${currentStepIndex + 1} of ${activeQuestions.length}`;
-                
-                // Automatically turn on microphone behavior for new prompts
-                micBtn.classList.add('flicker');
-                ctrlStart.classList.add('active-state');
-                ctrlPause.classList.remove('active-state');
-            } else if (currentStepIndex >= activeQuestions.length) {
-                mainPromptHeader.textContent = "Thank you! Clinical intake steps are completed successfully.";
-                stepIndicator.style.display = 'none';
-                endTourProcessingStates();
-            }
-        }
-
-        function initiateTourFlow() {
-            tourActive = true;
-            currentStepIndex = 0;
-            navTourBtn.classList.add('active-state');
-            introModal.style.display = 'none';
-            messageInput.value = "";
-            updatePromptDisplay();
-        }
-
-        function endTourProcessingStates() {
-            tourActive = false;
-            currentStepIndex = -1;
-            navTourBtn.classList.remove('active-state');
-            micBtn.classList.remove('flicker');
-            ctrlStart.classList.remove('active-state');
-            ctrlPause.classList.remove('active-state');
-            stepIndicator.style.display = 'none';
-        }
-
-        startTourBtn.addEventListener('click', initiateTourFlow);
-        navTourBtn.addEventListener('click', initiateTourFlow);
-        
-        exitModalBtn.addEventListener('click', () => {
-            introModal.style.display = 'none';
-            endTourProcessingStates();
-            mainPromptHeader.textContent = "Hi, what should we dive into today?";
-        });
-
-        // Form selection swapping resets prompt tracks dynamically
-        canvasFormSelect.addEventListener('change', () => {
-            currentFormType = canvasFormSelect.value;
-            if (tourActive) {
-                currentStepIndex = 0;
-                updatePromptDisplay();
-            }
-        });
-
-        // --- MEDIA STATE CONTROLS SYNCING ---
-        ctrlStart.addEventListener('click', () => {
-            micBtn.classList.add('flicker');
-            ctrlStart.classList.add('active-state');
-            ctrlPause.classList.remove('active-state');
-        });
-
-        ctrlPause.addEventListener('click', () => {
-            micBtn.classList.remove('flicker');
-            ctrlPause.classList.add('active-state');
-            ctrlStart.classList.remove('active-state');
-        });
-
-        ctrlSkip.addEventListener('click', () => {
-            if (tourActive) {
-                currentStepIndex++;
-                messageInput.value = "";
-                messageInput.style.height = 'auto'; // Reset expand size height
-                updatePromptDisplay();
-            }
-        });
-
-        ctrlRepeat.addEventListener('click', () => {
-            if (tourActive) {
-                // Flash animation indicator to simulate re-reading prompt
-                mainPromptHeader.style.opacity = 0.3;
-                setTimeout(() => mainPromptHeader.style.opacity = 1, 200);
-            }
-        });
-
-        ctrlFinish.addEventListener('click', () => {
-            if (tourActive) {
-                currentStepIndex = intakeWorkflows[currentFormType].length; // Jump to end state
-                updatePromptDisplay();
-            }
-        });
-
-        ctrlReset.addEventListener('click', () => {
-            messageInput.value = "";
-            messageInput.style.height = 'auto';
-            if (!tourActive) {
-                mainPromptHeader.textContent = "Hi, what should we dive into today?";
-            } else {
-                currentStepIndex = 0;
-                updatePromptDisplay();
-            }
-        });
-
-        navReadBtn.addEventListener('click', () => {
-            navReadBtn.classList.toggle('active-state');
-        });
-
-        // Microphone physical interactive toggle
-        micBtn.addEventListener('click', () => {
-            micBtn.classList.toggle('flicker');
-            if (micBtn.classList.contains('flicker')) {
-                ctrlStart.classList.add('active-state');
-                ctrlPause.classList.remove('active-state');
-            } else {
-                ctrlPause.classList.add('active-state');
-                ctrlStart.classList.remove('active-state');
-            }
-        });
-
-        // --- AUTOMATIC EXPAND TEXTAREA INTERACTION ---
-        messageInput.addEventListener('input', function() {
-            this.style.height = 'auto'; // Reset sizing parameters bounds
-            // Apply bounds calculation based on internal scrolling element elevations
-            this.style.height = (this.scrollHeight) + 'px';
-        });
-    </script>
+<!-- JS -->
+<script src="script.js"></script>
 
 </body>
 </html>

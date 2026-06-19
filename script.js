@@ -6,8 +6,26 @@ const hipaaConsent = document.getElementById('hipaa-consent-chk');
 const startTourBtn = document.getElementById('start-tour-btn');
 const exitModalBtn = document.getElementById('exit-modal-btn');
 
+const inputModeModal = document.getElementById('input-mode-modal');
+const chooseManualBtn = document.getElementById('choose-manual-btn');
+const chooseVoiceBtn = document.getElementById('choose-voice-btn');
+const voiceConsentChk = document.getElementById('voice-consent-chk');
+
+const panelPositionModal = document.getElementById('panel-position-modal');
+const panelLeftBtn = document.getElementById('panel-left-btn');
+const panelRightBtn = document.getElementById('panel-right-btn');
+
+const settingsModal = document.getElementById('settings-modal');
+const settingsBtn = document.getElementById('settings-btn');
+const settingsPanelLeft = document.getElementById('settings-panel-left');
+const settingsPanelRight = document.getElementById('settings-panel-right');
+const settingsTourVoiceOff = document.getElementById('settings-tour-voice-off');
+const settingsTourVoiceOn = document.getElementById('settings-tour-voice-on');
+const settingsCloseBtn = document.getElementById('settings-close-btn');
+
 const messageInput = document.getElementById('message-input');
 const micBtn = document.getElementById('mic-btn');
+const micLock = document.getElementById('mic-lock');
 const mainPromptHeader = document.getElementById('main-prompt-header');
 const stepIndicator = document.getElementById('step-indicator');
 const questionDisplay = document.getElementById('question-display');
@@ -16,7 +34,7 @@ const modalLangSelect = document.getElementById('modal-lang-select');
 const canvasLangSelect = document.getElementById('canvas-lang-select');
 const canvasFormSelect = document.getElementById('canvas-form-select');
 
-const ctrlStart = document.getElementById('ctrl-start'); // Start Demo
+const ctrlStart = document.getElementById('ctrl-start');
 const ctrlPause = document.getElementById('ctrl-pause');
 const ctrlFinish = document.getElementById('ctrl-finish');
 const ctrlRepeat = document.getElementById('ctrl-repeat');
@@ -25,6 +43,7 @@ const ctrlReset = document.getElementById('ctrl-reset');
 
 const navTourBtn = document.getElementById('nav-tour-btn');
 const navReadBtn = document.getElementById('nav-read-btn');
+const sidebar = document.getElementById('sidebar');
 
 // UI TOUR ELEMENTS
 const tourHighlight = document.getElementById('tour-highlight');
@@ -33,8 +52,10 @@ const tourText = document.getElementById('tour-text');
 const tourNextBtn = document.getElementById('tour-next');
 const tourStopBtn = document.getElementById('tour-stop');
 const tourExitBtn = document.getElementById('tour-exit');
+const tourVoiceToggleBtn = document.getElementById('tour-voice-toggle');
+const tourVoiceIcon = document.getElementById('tour-voice-icon');
 
-// WORKFLOWS (FULL LIBRARY – SAMPLE SETS)
+// WORKFLOWS
 const intakeWorkflows = {
     admission: [
         "What is your legal full name?",
@@ -103,18 +124,23 @@ let currentFormType = "admission";
 let tourActive = false;
 let collectedAnswers = [];
 
+let voiceModeEnabled = false;
+let guidedTourVoiceEnabled = true;
+
 // UI GUIDED TOUR STEPS
 const uiTourSteps = [
-    { element: "#nav-tour-btn", text: "This button starts the guided tour to explain the screen." },
+    { element: "#nav-tour-btn", text: "This button starts the guided tour to explain the screen and how the assistant works." },
     { element: "#canvas-lang-select", text: "Use this menu to change the language of the assistant." },
     { element: "#canvas-form-select", text: "Use this menu to choose which clinical form you want to complete." },
-    { element: "#ctrl-start", text: "This is the Start Demo button. Click it when you are ready to begin answering questions." },
+    { element: "#ctrl-start", text: "This is the Start Demo button. Click it when you are ready to begin the guided demo and questions." },
     { element: "#ctrl-pause", text: "Pause temporarily stops the question flow if you need a break." },
     { element: "#ctrl-skip", text: "Skip moves you to the next question without answering the current one." },
     { element: "#ctrl-repeat", text: "Repeat shows the current question again if you need to hear or read it twice." },
     { element: "#ctrl-finish", text: "Finish ends the intake session when you are done answering questions." },
     { element: "#ctrl-reset", text: "Reset clears the current answers and restarts the workflow from the beginning." },
-    { element: "#message-input", text: "This white box is where you type or dictate your answers." }
+    { element: "#settings-btn", text: "The Settings button lets you change preferences like panel position, guided tour voice, and other options." },
+    { element: "#message-input", text: "This white box is where you type or dictate your answers." },
+    { element: "#mic-btn", text: "This mic icon controls voice input. It turns red while waiting for consent and teal when actively listening." }
 ];
 
 let uiTourIndex = 0;
@@ -131,6 +157,46 @@ modalLangSelect.addEventListener('change', () => {
     canvasLangSelect.value = modalLangSelect.value;
 });
 
+// PANEL POSITION PERSISTENCE
+const PANEL_POSITION_KEY = "cia_panel_position";
+const TOUR_VOICE_KEY = "cia_tour_voice";
+
+function applySavedPanelPosition() {
+    const saved = localStorage.getItem(PANEL_POSITION_KEY);
+    if (saved === "left") {
+        sidebar.classList.remove('sidebar-right');
+        sidebar.classList.add('sidebar-left');
+    } else {
+        sidebar.classList.remove('sidebar-left');
+        sidebar.classList.add('sidebar-right');
+    }
+}
+
+function savePanelPosition(position) {
+    localStorage.setItem(PANEL_POSITION_KEY, position);
+    applySavedPanelPosition();
+}
+
+function applySavedTourVoice() {
+    const saved = localStorage.getItem(TOUR_VOICE_KEY);
+    if (saved === "off") {
+        guidedTourVoiceEnabled = false;
+        tourVoiceIcon.textContent = "mic_off";
+    } else {
+        guidedTourVoiceEnabled = true;
+        tourVoiceIcon.textContent = "mic";
+    }
+}
+
+function saveTourVoice(state) {
+    localStorage.setItem(TOUR_VOICE_KEY, state);
+    applySavedTourVoice();
+}
+
+// INITIAL PANEL POSITION
+applySavedPanelPosition();
+applySavedTourVoice();
+
 // TOUR ENGINE – QUESTIONS
 function updatePromptDisplay() {
     const activeQuestions = intakeWorkflows[currentFormType];
@@ -140,9 +206,13 @@ function updatePromptDisplay() {
         questionDisplay.textContent = q;
         stepIndicator.style.display = 'block';
         stepIndicator.textContent = `Step ${currentStepIndex + 1} of ${activeQuestions.length}`;
-        setMicState(true);
+        setMicState(voiceModeEnabled);
         ctrlStart.classList.add('active-state');
         ctrlPause.classList.remove('active-state');
+
+        if (voiceModeEnabled && guidedTourVoiceEnabled) {
+            speakText(q);
+        }
     } else if (currentStepIndex >= activeQuestions.length) {
         questionDisplay.textContent = "";
         mainPromptHeader.textContent = "Thank you. Your clinical intake responses have been captured.";
@@ -157,7 +227,7 @@ function initiateTourFlow() {
     currentStepIndex = 0;
     collectedAnswers = [];
     messageInput.value = "";
-    ctrlStart.classList.remove('pulse'); // stop pulsing once questions start
+    ctrlStart.classList.remove('start-pulse');
     updatePromptDisplay();
 }
 
@@ -169,6 +239,7 @@ function endTourProcessingStates() {
     ctrlStart.classList.remove('active-state');
     ctrlPause.classList.remove('active-state');
     stepIndicator.style.display = 'none';
+    ctrlStart.classList.remove('start-pulse');
 }
 
 // EVENT LISTENERS — MODAL / TOUR
@@ -200,12 +271,35 @@ navReadBtn.addEventListener('click', () => {
     navReadBtn.classList.toggle('active-state');
 });
 
+// SETTINGS
+settingsBtn.addEventListener('click', () => {
+    settingsModal.style.display = 'flex';
+});
+
+settingsCloseBtn.addEventListener('click', () => {
+    settingsModal.style.display = 'none';
+});
+
+settingsPanelLeft.addEventListener('click', () => {
+    savePanelPosition("left");
+});
+
+settingsPanelRight.addEventListener('click', () => {
+    savePanelPosition("right");
+});
+
+settingsTourVoiceOff.addEventListener('click', () => {
+    saveTourVoice("off");
+});
+
+settingsTourVoiceOn.addEventListener('click', () => {
+    saveTourVoice("on");
+});
+
 // SIDEBAR BUTTONS – QUESTION FLOW
 ctrlStart.addEventListener('click', () => {
-    if (!tourActive) {
-        // Start Demo only if not already in a tour
-        initiateTourFlow();
-    }
+    ctrlStart.classList.remove('start-pulse');
+    inputModeModal.style.display = 'flex';
 });
 
 ctrlPause.addEventListener('click', () => {
@@ -228,6 +322,10 @@ ctrlRepeat.addEventListener('click', () => {
     if (tourActive) {
         questionDisplay.style.opacity = 0.3;
         setTimeout(() => questionDisplay.style.opacity = 1, 200);
+        if (voiceModeEnabled && guidedTourVoiceEnabled && currentStepIndex >= 0) {
+            const q = intakeWorkflows[currentFormType][currentStepIndex];
+            speakText(q);
+        }
     }
 });
 
@@ -252,16 +350,38 @@ ctrlReset.addEventListener('click', () => {
     }
 });
 
+// INPUT MODE MODAL
+chooseManualBtn.addEventListener('click', () => {
+    voiceModeEnabled = false;
+    micBtn.classList.remove('mic-red', 'mic-teal');
+    micLock.style.display = 'none';
+    inputModeModal.style.display = 'none';
+    initiateTourFlow();
+});
+
+chooseVoiceBtn.addEventListener('click', () => {
+    document.getElementById('voice-consent-section').style.display = 'block';
+    micBtn.classList.add('mic-red');
+    micLock.style.display = 'inline-block';
+});
+
+voiceConsentChk.addEventListener('change', () => {
+    if (voiceConsentChk.checked) {
+        micBtn.classList.remove('mic-red');
+        micBtn.classList.add('mic-teal');
+        micLock.style.display = 'none';
+        voiceModeEnabled = true;
+        inputModeModal.style.display = 'none';
+        initiateTourFlow();
+    }
+});
+
 // MIC STATE
 function setMicState(active) {
     if (active) {
-        micBtn.classList.add('flicker');
-        ctrlStart.classList.add('active-state');
-        ctrlPause.classList.remove('active-state');
+        micBtn.classList.add('mic-teal');
     } else {
-        micBtn.classList.remove('flicker');
-        ctrlPause.classList.add('active-state');
-        ctrlStart.classList.remove('active-state');
+        micBtn.classList.remove('mic-teal');
     }
 }
 
@@ -293,24 +413,29 @@ if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
     };
 
     recognition.onend = () => {
-        setMicState(false);
+        micBtn.classList.remove('mic-teal');
     };
 } else {
     console.warn('Web Speech API not supported in this browser.');
 }
 
 micBtn.addEventListener('click', () => {
-    if (!recognition) {
-        alert('Voice input is not supported in this browser.');
+    if (!voiceModeEnabled) {
+        alert("Voice mode requires consent and selection of Voice Input.");
         return;
     }
 
-    if (micBtn.classList.contains('flicker')) {
+    if (!recognition) {
+        alert("Voice input is not supported in this browser.");
+        return;
+    }
+
+    if (micBtn.classList.contains('mic-teal')) {
         recognition.stop();
-        setMicState(false);
+        micBtn.classList.remove('mic-teal');
     } else {
-        setMicState(true);
         recognition.start();
+        micBtn.classList.add('mic-teal');
     }
 });
 
@@ -341,6 +466,17 @@ function generateFhirQuestionnaireResponse() {
     alert("FHIR JSON generated. Check console for details.");
 }
 
+// GUIDED TOUR VOICE (TEXT-TO-SPEECH)
+function speakText(text) {
+    if (!guidedTourVoiceEnabled) return;
+    if (!('speechSynthesis' in window)) return;
+
+    const utterance = new SpeechSynthesisUtterance(text);
+    utterance.lang = canvasLangSelect.value || 'en-US';
+    window.speechSynthesis.cancel();
+    window.speechSynthesis.speak(utterance);
+}
+
 // ===============================
 // UI GUIDED TOUR ENGINE
 // ===============================
@@ -359,16 +495,33 @@ function showUITourStep() {
 
     const rect = el.getBoundingClientRect();
 
+    // Highlight box
     tourHighlight.style.top = rect.top + "px";
     tourHighlight.style.left = rect.left + "px";
     tourHighlight.style.width = rect.width + "px";
     tourHighlight.style.height = rect.height + "px";
     tourHighlight.style.display = "block";
 
+    // Tooltip text
     tourText.textContent = step.text;
-    tourTooltip.style.top = rect.bottom + 12 + "px";
-    tourTooltip.style.left = rect.left + "px";
+
+    // SMART POSITIONING
+    const tooltipHeight = 120;
+    const screenHeight = window.innerHeight;
+
+    if (rect.bottom + tooltipHeight > screenHeight - 40) {
+        tourTooltip.style.top = rect.top - 10 + "px";
+        tourTooltip.style.left = rect.right + 16 + "px";
+    } else {
+        tourTooltip.style.top = rect.bottom + 12 + "px";
+        tourTooltip.style.left = rect.left + "px";
+    }
+
     tourTooltip.style.display = "block";
+
+    if (guidedTourVoiceEnabled) {
+        speakText(step.text);
+    }
 }
 
 function nextUITourStep() {
@@ -393,12 +546,43 @@ function endUITour() {
     tourHighlight.style.display = "none";
     tourTooltip.style.display = "none";
     navTourBtn.classList.remove('active-state');
+    window.speechSynthesis.cancel();
 
-    // After UI tour ends, pulse Start Demo button
-    ctrlStart.classList.add('pulse');
+    // After UI tour ends, ask panel position if not set
+    const saved = localStorage.getItem(PANEL_POSITION_KEY);
+    if (!saved) {
+        panelPositionModal.style.display = 'flex';
+    } else {
+        ctrlStart.classList.add('start-pulse');
+    }
 }
 
 // UI TOUR BUTTONS
 tourNextBtn.addEventListener('click', nextUITourStep);
 tourStopBtn.addEventListener('click', stopUITour);
 tourExitBtn.addEventListener('click', exitUITour);
+
+tourVoiceToggleBtn.addEventListener('click', () => {
+    guidedTourVoiceEnabled = !guidedTourVoiceEnabled;
+    if (guidedTourVoiceEnabled) {
+        tourVoiceIcon.textContent = "mic";
+        saveTourVoice("on");
+    } else {
+        tourVoiceIcon.textContent = "mic_off";
+        saveTourVoice("off");
+        window.speechSynthesis.cancel();
+    }
+});
+
+// PANEL POSITION MODAL BUTTONS
+panelLeftBtn.addEventListener('click', () => {
+    savePanelPosition("left");
+    panelPositionModal.style.display = 'none';
+    ctrlStart.classList.add('start-pulse');
+});
+
+panelRightBtn.addEventListener('click', () => {
+    savePanelPosition("right");
+    panelPositionModal.style.display = 'none';
+    ctrlStart.classList.add('start-pulse');
+});

@@ -46,8 +46,43 @@
     </div>
 </div>
 
-<!-- SIDEBAR -->
-<nav class="sidebar">
+<!-- INPUT MODE SELECTION MODAL -->
+<div class="modal-overlay" id="input-mode-modal" style="display:none;">
+    <div class="modal-card">
+        <h2 class="modal-title">Choose Input Method</h2>
+        <p class="modal-subtitle">How would you like to answer the questions?</p>
+
+        <div class="modal-actions">
+            <button class="btn btn-primary" id="choose-manual-btn">Manual Input</button>
+            <button class="btn btn-secondary" id="choose-voice-btn">Voice Input</button>
+        </div>
+
+        <div id="voice-consent-section" style="display:none; margin-top:20px;">
+            <div class="form-field checkbox-field">
+                <input type="checkbox" id="voice-consent-chk">
+                <label for="voice-consent-chk">
+                    I consent to secure voice transcription for clinical intake purposes under protected privacy guidelines.
+                </label>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- PANEL POSITION MODAL -->
+<div class="modal-overlay" id="panel-position-modal" style="display:none;">
+    <div class="modal-card">
+        <h2 class="modal-title">Control Panel Position</h2>
+        <p class="modal-subtitle">Where would you like your control panel?</p>
+
+        <div class="modal-actions">
+            <button class="btn btn-secondary" id="panel-left-btn">Left side</button>
+            <button class="btn btn-primary" id="panel-right-btn">Right side (recommended)</button>
+        </div>
+    </div>
+</div>
+
+<!-- SIDEBAR (PANEL) -->
+<nav class="sidebar sidebar-right" id="sidebar">
     <div class="sidebar-top">
         <button class="sidebar-btn-stacked" id="nav-tour-btn">
             <span class="material-symbols-outlined">explore</span>
@@ -120,7 +155,39 @@
             <option value="allergy">Allergies</option>
         </select>
     </div>
+
+    <button class="settings-btn" id="settings-btn" title="Settings">
+        <span class="material-symbols-outlined">settings</span>
+    </button>
 </header>
+
+<!-- SETTINGS MODAL -->
+<div class="modal-overlay" id="settings-modal" style="display:none;">
+    <div class="modal-card">
+        <h2 class="modal-title">Settings</h2>
+        <p class="modal-subtitle">Adjust your preferences.</p>
+
+        <div class="form-field">
+            <label>Control panel position</label>
+            <div class="modal-actions">
+                <button class="btn btn-secondary" id="settings-panel-left">Left side</button>
+                <button class="btn btn-primary" id="settings-panel-right">Right side</button>
+            </div>
+        </div>
+
+        <div class="form-field">
+            <label>Guided tour voice</label>
+            <div class="modal-actions">
+                <button class="btn btn-secondary" id="settings-tour-voice-off">Mute</button>
+                <button class="btn btn-primary" id="settings-tour-voice-on">Enable</button>
+            </div>
+        </div>
+
+        <div class="modal-actions">
+            <button class="btn btn-secondary" id="settings-close-btn">Close</button>
+        </div>
+    </div>
+</div>
 
 <!-- MAIN CANVAS -->
 <main class="main-container">
@@ -141,6 +208,7 @@
             <div class="right-controls">
                 <button type="button" class="icon-control-btn" id="mic-btn">
                     <span class="material-symbols-outlined mic-icon">mic</span>
+                    <span class="material-symbols-outlined mic-lock" id="mic-lock" style="display:none;">lock</span>
                 </button>
             </div>
         </div>
@@ -155,6 +223,9 @@
         <button id="tour-next">Next</button>
         <button id="tour-stop">Stop</button>
         <button id="tour-exit">Exit</button>
+        <button id="tour-voice-toggle">
+            <span class="material-symbols-outlined" id="tour-voice-icon">mic</span>
+        </button>
     </div>
 </div>
 

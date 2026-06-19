@@ -1,17 +1,13 @@
+<!-- index.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Clinical Intake Assistant</title>
-
-    <!-- Google Material Icons -->
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" />
-
-    <!-- External CSS -->
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" />
 </head>
-
 <body>
 
 <!-- INTRO MODAL -->
@@ -30,6 +26,9 @@
                 <option value="zh">中文</option>
                 <option value="hi">हिन्दी</option>
                 <option value="ru">Русский</option>
+                <option value="fr">Français</option>
+                <option value="pt">Português</option>
+                <option value="ar">العربية</option>
             </select>
         </div>
 
@@ -57,7 +56,7 @@
     </div>
 
     <div class="menu-group">
-        <button class="icon-btn" id="ctrl-start" title="Start">
+        <button class="icon-btn" id="ctrl-start" title="Start Demo">
             <span class="material-symbols-outlined">play_arrow</span>
         </button>
 
@@ -100,6 +99,9 @@
             <option value="zh">中文</option>
             <option value="hi">हिन्दी</option>
             <option value="ru">Русский</option>
+            <option value="fr">Français</option>
+            <option value="pt">Português</option>
+            <option value="ar">العربية</option>
         </select>
     </div>
 
@@ -108,6 +110,14 @@
         <select class="config-select" id="canvas-form-select">
             <option value="admission">Admission Form</option>
             <option value="sleep">Sleep Form</option>
+            <option value="pain">Pain Form</option>
+            <option value="mental">Mental Health</option>
+            <option value="obgyn">OB/GYN</option>
+            <option value="peds">Pediatric</option>
+            <option value="sdoh">Social Determinants</option>
+            <option value="insurance">Insurance</option>
+            <option value="meds">Medications</option>
+            <option value="allergy">Allergies</option>
         </select>
     </div>
 </header>
@@ -117,6 +127,8 @@
     <h1 class="header-text" id="main-prompt-header">
         Hi, what should we dive into today?
     </h1>
+
+    <h2 id="question-display" class="question-display"></h2>
 
     <form class="floating-form" onsubmit="event.preventDefault();">
         <textarea class="text-input" id="message-input" rows="1" placeholder="Type your response here..."></textarea>
@@ -135,8 +147,17 @@
     </form>
 </main>
 
-<!-- JS -->
-<script src="script.js"></script>
+<!-- UI GUIDED TOUR OVERLAY -->
+<div id="tour-highlight"></div>
+<div id="tour-tooltip">
+    <p id="tour-text"></p>
+    <div class="tour-controls">
+        <button id="tour-next">Next</button>
+        <button id="tour-stop">Stop</button>
+        <button id="tour-exit">Exit</button>
+    </div>
+</div>
 
+<script src="script.js"></script>
 </body>
 </html>

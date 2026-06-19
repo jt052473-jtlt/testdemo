@@ -15,9 +15,7 @@ body {
     position: relative;
 }
 
-/* ================================
-   INTRO MODAL
-=================================== */
+/* INTRO MODAL */
 .modal-overlay {
     position: fixed;
     top: 0;
@@ -137,9 +135,7 @@ body {
     transform: translateY(-1px);
 }
 
-/* ================================
-   SIDEBAR (COPILOT STYLE)
-=================================== */
+/* SIDEBAR (COPILOT STYLE) */
 .sidebar {
     width: 72px;
     background: rgba(255, 255, 255, 0.12);
@@ -172,7 +168,6 @@ body {
     width: 100%;
 }
 
-/* COPILOT ICON BUTTONS */
 .icon-btn {
     background: none;
     border: none;
@@ -204,7 +199,6 @@ body {
         0 0 8px rgba(255, 255, 255, 0.35);
 }
 
-/* Stacked buttons (Tour, Read) */
 .sidebar-btn-stacked {
     background: none;
     border: none;
@@ -232,9 +226,7 @@ body {
     text-align: center;
 }
 
-/* ================================
-   TOP CONFIG PANEL
-=================================== */
+/* TOP CONFIG */
 .top-config {
     position: absolute;
     top: 24px;
@@ -270,9 +262,7 @@ body {
     cursor: pointer;
 }
 
-/* ================================
-   MAIN CANVAS
-=================================== */
+/* MAIN CANVAS */
 .main-container {
     flex: 1;
     display: flex;
@@ -290,9 +280,7 @@ body {
     max-width: 800px;
 }
 
-/* ================================
-   FLOATING INPUT FORM
-=================================== */
+/* FLOATING INPUT FORM */
 .floating-form {
     width: 100%;
     max-width: 740px;
@@ -352,4 +340,58 @@ body {
     0% { opacity: 1; transform: scale(1); }
     50% { opacity: 0.4; transform: scale(0.95); }
     100% { opacity: 1; transform: scale(1); }
+}
+
+/* MOBILE LAYOUT */
+@media (max-width: 768px) {
+    body {
+        flex-direction: column;
+    }
+
+    .sidebar {
+        width: 100%;
+        height: 64px;
+        flex-direction: row;
+        justify-content: space-between;
+        padding: 8px 16px;
+        border-right: none;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.22);
+    }
+
+    .sidebar-top,
+    .sidebar-bottom {
+        width: auto;
+    }
+
+    .menu-group {
+        flex-direction: row;
+        gap: 10px;
+        justify-content: center;
+    }
+
+    .main-container {
+        padding: 16px;
+        justify-content: flex-start;
+    }
+
+    .header-text {
+        font-size: 1.4rem;
+        margin-bottom: 16px;
+    }
+
+    .floating-form {
+        max-width: 100%;
+        border-radius: 18px;
+        padding: 14px;
+    }
+}
+
+@media (max-width: 480px) {
+    .header-text {
+        font-size: 1.2rem;
+    }
+
+    .sidebar-btn-stacked .btn-label {
+        display: none;
+    }
 }

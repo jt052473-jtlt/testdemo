@@ -11,6 +11,7 @@ body {
     background: linear-gradient(135deg, #1d5361, #2b7a8d); /* Deep Teal Canvas */
     color: #ffffff;
     overflow: hidden;
+    position: relative;
 }
 
 /* --- SIDEBAR RAIL --- */
@@ -25,6 +26,7 @@ body {
     align-items: center;
     padding: 30px 0;
     justify-content: center; /* Center the control group vertically */
+    z-index: 5;
 }
 
 .menu-group {
@@ -50,6 +52,55 @@ body {
 
 .icon-btn:hover {
     background-color: rgba(255, 255, 255, 0.15);
+    color: #ffffff;
+}
+
+/* --- FLOATING CONFIGURATION OVERLAY --- */
+.top-config {
+    position: absolute;
+    top: 24px;
+    right: 24px;
+    display: flex;
+    gap: 12px;
+    z-index: 10;
+}
+
+.dropdown-wrapper {
+    display: flex;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.06);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 16px;
+    padding: 8px 14px;
+    transition: background 0.2s, border-color 0.2s;
+}
+
+.dropdown-wrapper:hover {
+    background: rgba(255, 255, 255, 0.12);
+    border-color: rgba(255, 255, 255, 0.2);
+}
+
+.config-icon {
+    font-size: 20px !important;
+    color: rgba(255, 255, 255, 0.75);
+    margin-right: 8px;
+}
+
+.config-select {
+    background: transparent;
+    border: none;
+    color: #ffffff;
+    font-size: 0.95rem;
+    font-weight: 500;
+    outline: none;
+    cursor: pointer;
+    padding-right: 4px;
+}
+
+.config-select option {
+    background: #1d5361; /* Matches the base canvas color theme */
     color: #ffffff;
 }
 

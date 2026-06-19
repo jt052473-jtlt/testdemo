@@ -1,0 +1,103 @@
+/* FULL TEAL BACKGROUND */
+.teal-home {
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    background: linear-gradient(135deg, #0f172a 0%, #0a2538 40%, #0b3b4f 100%);
+    font-family: 'Inter', sans-serif;
+    color: white;
+}
+
+/* FROSTED GLASS PANEL */
+.glass-panel {
+    background: rgba(255, 255, 255, 0.14);
+    backdrop-filter: blur(22px) saturate(180%);
+    -webkit-backdrop-filter: blur(22px) saturate(180%);
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    box-shadow: 0 8px 28px rgba(0, 0, 0, 0.25);
+    border-radius: 18px;
+}
+
+/* LEFT SIDEBAR */
+.sidebar {
+    position: absolute;
+    left: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.side-btn {
+    width: 50px;
+    height: 50px;
+    border-radius: 12px;
+    border: none;
+    background: rgba(255, 255, 255, 0.25);
+    color: white;
+    font-size: 1.4rem;
+    cursor: pointer;
+    backdrop-filter: blur(12px);
+}
+
+.side-btn:hover {
+    background: rgba(255, 255, 255, 0.35);
+}
+
+/* CENTER BOX */
+.center-box {
+    width: 600px;
+    padding: 2.5rem;
+    text-align: center;
+}
+
+/* TITLE */
+.title {
+    margin-bottom: 2rem;
+    font-size: 1.8rem;
+    font-weight: 600;
+}
+
+/* INPUT BOX */
+.input-wrapper {
+    display: flex;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.25);
+    border-radius: 14px;
+    padding: 0.5rem;
+    backdrop-filter: blur(12px);
+}
+
+.main-input {
+    flex: 1;
+    padding: 1rem;
+    border: none;
+    background: transparent;
+    color: white;
+    font-size: 1.1rem;
+}
+
+.main-input::placeholder {
+    color: #e2e8f0;
+}
+
+.send-btn {
+    background: rgba(255, 255, 255, 0.35);
+    border: none;
+    padding: 0.8rem 1rem;
+    border-radius: 12px;
+    color: white;
+    font-size: 1.2rem;
+    cursor: pointer;
+}
+
+.send-btn:hover {
+    background: rgba(255, 255, 255, 0.5);
+}

@@ -1,245 +1,120 @@
-* {
-    box-sizing: border-box;
+body {
     margin: 0;
     padding: 0;
     font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-}
-
-body {
-    display: flex;
+    background: linear-gradient(135deg, #1d5361, #2b7a8d);
     height: 100vh;
-    background: linear-gradient(135deg, #1d5361, #2b7a8d); /* Deep Teal Canvas */
-    color: #ffffff;
-    overflow: hidden;
-    position: relative;
-}
-
-/* --- SIDEBAR RAIL (PREMIUM ACRYLIC WITH TOP/BOTTOM SECTIONS) --- */
-.sidebar {
-    width: 76px;
-    background-color: rgba(255, 255, 255, 0.12); /* Semi-transparent light tint overlay */
-    backdrop-filter: blur(35px) saturate(140%);   /* Heavy crisp blurring */
-    -webkit-backdrop-filter: blur(35px) saturate(140%);
-    border-right: 1px solid rgba(255, 255, 255, 0.25);
-    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.15);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 20px 0;
-    justify-content: space-between; /* Evenly distributes top, middle, and bottom sections */
-    z-index: 5;
-}
-
-.sidebar-top, .sidebar-bottom {
-    width: 100%;
-    display: flex;
-    justify-content: center;
-}
-
-.menu-group {
-    display: flex;
-    flex-direction: column;
-    gap: 20px; /* Symmetrical layouts for core controls */
-    align-items: center;
-    width: 100%;
-}
-
-/* Base button styling for individual controls */
-.icon-btn {
-    background: none;
-    border: none;
-    color: rgba(255, 255, 255, 0.8);
-    cursor: pointer;
-    padding: 10px;
-    border-radius: 12px;
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: all 0.2s ease;
 }
 
-.icon-btn:hover {
-    background-color: rgba(255, 255, 255, 0.2);
-    color: #ffffff;
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(10px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
 }
 
-/* Specialized stacked layout for Guided Tour and Read Aloud */
-.sidebar-btn-stacked {
-    background: none;
-    border: none;
-    color: rgba(255, 255, 255, 0.85);
-    cursor: pointer;
+.modal-card {
+    background: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    padding: 2.5rem;
+    border-radius: 20px;
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+    max-width: 500px;
+    width: 90%;
+    color: #1a1a1a;
+}
+
+.modal-title {
+    margin-top: 0;
+    font-size: 1.75rem;
+    font-weight: 700;
+    margin-bottom: 0.75rem;
+}
+
+.modal-subtitle {
+    font-size: 1rem;
+    line-height: 1.6;
+    color: #444;
+    margin-bottom: 2rem;
+}
+
+.form-field {
+    margin-bottom: 1.5rem;
     display: flex;
     flex-direction: column;
-    align-items: center;
-    gap: 4px;
-    width: 85%;
-    padding: 10px 4px;
-    border-radius: 12px;
-    transition: all 0.2s ease;
 }
 
-.sidebar-btn-stacked:hover {
-    background-color: rgba(255, 255, 255, 0.15);
-    color: #ffffff;
-}
-
-.sidebar-btn-stacked .btn-label {
-    font-size: 0.7rem;
+.form-field label {
     font-weight: 600;
-    text-align: center;
-    line-height: 1.1;
-    letter-spacing: -0.2px;
+    font-size: 0.9rem;
+    margin-bottom: 0.5rem;
 }
 
-/* --- FLOATING CONFIGURATION OVERLAY --- */
-.top-config {
-    position: absolute;
-    top: 24px;
-    right: 24px;
-    display: flex;
-    gap: 12px;
-    z-index: 10;
+.styled-select {
+    padding: 0.75rem;
+    border-radius: 10px;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    background: rgba(255, 255, 255, 0.5);
+    font-size: 1rem;
 }
 
-.dropdown-wrapper {
-    display: flex;
+.checkbox-field {
+    flex-direction: row;
     align-items: center;
-    background: rgba(255, 255, 255, 0.06);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 16px;
-    padding: 8px 14px;
-    transition: background 0.2s, border-color 0.2s;
+    gap: 0.75rem;
 }
 
-.dropdown-wrapper:hover {
-    background: rgba(255, 255, 255, 0.12);
-    border-color: rgba(255, 255, 255, 0.2);
+.checkbox-field input {
+    width: 20px;
+    height: 20px;
+    accent-color: #008080;
 }
 
-.config-icon {
-    font-size: 20px !important;
-    color: rgba(255, 255, 255, 0.75);
-    margin-right: 8px;
+.modal-actions {
+    display: flex;
+    gap: 1rem;
+    margin-top: 2.5rem;
 }
 
-.config-select {
-    background: transparent;
-    border: none;
-    color: #ffffff;
-    font-size: 0.95rem;
-    font-weight: 500;
-    outline: none;
-    cursor: pointer;
-    padding-right: 4px;
-}
-
-.config-select option {
-    background: #1d5361;
-    color: #ffffff;
-}
-
-/* --- MAIN CANVAS CONTENT --- */
-.main-container {
+.btn {
     flex: 1;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 40px;
-}
-
-.header-text {
-    font-size: 2.2rem;
-    font-weight: 500;
-    margin-bottom: 32px;
-    text-align: center;
-    letter-spacing: -0.5px;
-}
-
-/* --- FLOATING INPUT CARD (SOLID WHITE ENVIRONMENT) --- */
-.floating-form {
-    width: 100%;
-    max-width: 740px;
-    background: #ffffff;
-    border-radius: 28px;
-    padding: 18px;
-    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.25);
-    display: flex;
-    flex-direction: column;
-    gap: 14px;
-}
-
-.text-input {
-    width: 100%;
+    padding: 1rem;
+    border-radius: 12px;
     border: none;
-    outline: none;
-    font-size: 1.1rem;
-    color: #222222;
-    background: transparent;
-    resize: none;
-    padding: 4px;
-}
-
-.text-input::placeholder {
-    color: #757575;
-}
-
-/* Internal control toolbar */
-.form-controls {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding-top: 8px;
-}
-
-.left-controls, .right-controls {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-.icon-control-btn {
-    background: none;
-    border: none;
-    color: #555555;
+    font-weight: 600;
     cursor: pointer;
-    display: flex;
-    align-items: center;
-    padding: 6px;
-    border-radius: 50%;
-    transition: all 0.2s ease;
+    font-size: 1rem;
+    transition: all 0.3s ease;
 }
 
-.icon-control-btn:hover {
-    background: #f1f3f5;
-    color: #111111;
+.btn-primary {
+    background: #008080;
+    color: white;
+    box-shadow: 0 4px 15px rgba(0, 128, 128, 0.3);
 }
 
-.material-symbols-outlined {
-    font-size: 24px;
+.btn-primary:hover {
+    background: #006666;
+    transform: translateY(-2px);
 }
 
-/* --- MICROPHONE FLICKER KEYFRAMES & ANIMATION --- */
-.icon-control-btn.flicker {
-    color: #df4747;
-    background: rgba(223, 71, 71, 0.1);
-    animation: pulse 1.2s infinite ease-in-out;
+.btn-secondary {
+    background: rgba(255, 255, 255, 0.5);
+    color: #333;
+    border: 1px solid rgba(0, 0, 0, 0.1);
 }
 
-@keyframes pulse {
-    0% {
-        opacity: 1;
-        transform: scale(1);
-    }
-    50% {
-        opacity: 0.4;
-        transform: scale(0.95);
-    }
-    100% {
-        opacity: 1;
-        transform: scale(1);
-    }
+.btn-secondary:hover {
+    background: rgba(255, 255, 255, 0.8);
 }
